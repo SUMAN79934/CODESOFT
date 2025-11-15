@@ -258,7 +258,6 @@
       <div>SUMAN NAYAK <span class="muted"></span></div>
     </footer>
 
-    <!-- Modal for project details -->
     <div id="modal" class="modal" onclick="closeModal(event)">
       <div class="box card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <button class="close" onclick="closeModal(event)">&times;</button>
@@ -270,7 +269,6 @@
   </div>
 
   <script>
-    // Small JS utilities for the single-file portfolio
     function openProject(title,desc){
       document.getElementById('modalTitle').innerText = title;
       document.getElementById('modalBody').innerText = desc;
@@ -282,7 +280,6 @@
       }
     }
 
-    // Mailto-based contact — falls back to opening user's email client
     function sendMail(e){
       e.preventDefault();
       const name = document.getElementById('name').value.trim();
@@ -293,7 +290,6 @@
       const mailto = `mailto:malohsuman14321@gmail.com?subject=${subject}&body=${body}`;
       window.location.href = mailto;
     }
-    // Accessible status message for feedback
     function showStatusMessage(message, isError = false) {
       let status = document.getElementById('statusMessage');
       if (!status) {
@@ -318,39 +314,35 @@
       setTimeout(() => { status.style.display = 'none'; }, 3000);
     }
 
-    // Copy email utility
-    document.getElementById('copyEmail').addEventListener('click', function(evt){
-      evt.preventDefault();
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText('malohsuman14321@gmail.com')
-          .then(()=> showStatusMessage('Email copied to clipboard'))
-          .catch(()=> showStatusMessage('Copy failed — please copy manually: malohsuman14321@gmail.com', true));
-      } else {
-        showStatusMessage('Clipboard not supported — please copy manually: malohsuman14321@gmail.com', true);
-      }
-    });
-          .then(() => {
-            status.textContent = 'Email copied to clipboard.';
-          })
-          .catch(() => {
-            status.textContent = 'Copy failed — please copy manually: malohsuman14321@gmail.com';
-          });
-      } else {
-        status.textContent = 'Clipboard not supported — please copy manually: malohsuman14321@gmail.com';
-      }
- });
+    (function(){
+      const copyEl = document.getElementById('copyEmail');
+      if (!copyEl) return;
+      copyEl.addEventListener('click', function(evt){
+        evt.preventDefault();
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText('malohsuman14321@gmail.com')
+            .then(() => showStatusMessage('Email copied to clipboard'))
+            .catch(() => showStatusMessage('Copy failed — please copy manually: malohsuman14321@gmail.com', true));
+        } else {
+          showStatusMessage('Clipboard not supported — please copy manually: malohsuman14321@gmail.com', true);
+        }
+      });
+    })();
 
-    // Resume download: creates a small placeholder PDF blob. Replace with your real file link.
-    document.getElementById('downloadResume').addEventListener('click', function(e){
-      e.preventDefault();
-      const text = 'This is a placeholder resume for Your Name. Replace this file with your real resume.';
-      const blob = new Blob([text], {type: 'text/plain'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'YourName-Resume.txt';
-      document.body.appendChild(a); a.click(); a.remove();
-      URL.revokeObjectURL(url);
-    });
+    (function(){
+      const resumeEl = document.getElementById('resume');
+      if (!resumeEl) return;
+      resumeEl.addEventListener('click', function(e){
+        e.preventDefault();
+        const text = 'This is a placeholder resume for Your Name. Replace this file with your real resume.';
+        const blob = new Blob([text], {type: 'text/plain'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'YourName-Resume.txt';
+        document.body.appendChild(a); a.click(); a.remove();
+        URL.revokeObjectURL(url);
+      });
+    })();
 
     // Smooth scroll for nav links
     document.querySelectorAll('nav a[href^="#"]').forEach(a => {
